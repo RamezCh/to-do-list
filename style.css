@@ -1,3 +1,4 @@
+/* General Styling */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -9,22 +10,28 @@ body {
   height: 100vh;
 }
 
+/* Main Container */
 main {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  width: 90%;
   max-width: 650px;
+  box-sizing: border-box;
 }
 
 h1 {
   text-align: center;
   color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
+/* Form Styling */
 form {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
@@ -34,7 +41,9 @@ form input[type='text'] {
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  height: 40px;
 }
 
 form button {
@@ -45,12 +54,16 @@ form button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
+  height: 40px;
+  margin-left: 10px;
 }
 
 form button:hover {
   background-color: #4cae4c;
 }
 
+/* Button Container */
 .button-container {
   text-align: center;
   margin-bottom: 20px;
@@ -64,12 +77,25 @@ form button:hover {
   border-radius: 5px;
   cursor: pointer;
   margin: 0 5px;
+  transition: background-color 0.3s ease;
 }
 
 .button-container button:hover {
   background-color: #e0e0e0;
 }
 
+/* Active Tab Styling */
+.button-container button.active-tab {
+  background-color: #0275d8;
+  color: #fff;
+  border: none;
+}
+
+.button-container button.active-tab:hover {
+  background-color: #025aa5;
+}
+
+/* Task Container */
 .task-container {
   list-style: none;
   padding: 0;
@@ -89,6 +115,8 @@ form button:hover {
 .task p {
   margin: 0;
   flex: 1;
+  font-size: 16px;
+  color: #333;
 }
 
 .task.completed p {
@@ -103,6 +131,7 @@ form button:hover {
   font-size: 18px;
   margin-left: 10px;
   color: #333;
+  transition: color 0.3s ease;
 }
 
 .task button.edit-btn:hover {
@@ -115,4 +144,40 @@ form button:hover {
 
 .task button.remove-btn:hover {
   color: #d9534f;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  main {
+    padding: 15px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  form input[type='text'] {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  form button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .button-container button {
+    padding: 10px;
+    font-size: 14px;
+    margin: 5px 0;
+  }
+
+  .task {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task button {
+    font-size: 16px;
+  }
 }
