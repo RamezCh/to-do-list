@@ -91,7 +91,7 @@ form button:hover {
   flex: 1;
 }
 
-.task .completed p {
+.task.completed p {
   text-decoration: line-through;
   color: #999;
 }

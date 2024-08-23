@@ -53,7 +53,7 @@ function displayTasks(tasks) {
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
     if (task.isComplete) {
-      taskElement.classList.add('complete');
+      taskElement.classList.add('completed');
     }
     taskElement.innerHTML = taskHTML;
     taskContainer.appendChild(taskElement);
