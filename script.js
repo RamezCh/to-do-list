@@ -6,6 +6,7 @@ const taskContainer = document.getElementsByClassName('task-container')[0];
 
 const tasks = [];
 let idCounter = 0;
+let currentTab = 'All';
 
 document
   .getElementById('task-form')
@@ -34,15 +35,17 @@ document
 function displayTasks(tasks) {
   // Clear the task container
   taskContainer.innerHTML = '';
-
-  // Check if there are any tasks
-  if (tasks.length === 0) {
-    taskContainer.innerHTML = '<p>No tasks available. Add a new task!</p>';
-    return;
+  let displayTasks = tasks;
+  // Loop through the tasks array and create HTML elements for each task
+  if (currentTab === 'Active') {
+    displayTasks = tasks.filter(task => !task.isComplete);
   }
 
-  // Loop through the tasks array and create HTML elements for each task
-  tasks.forEach(task => {
+  if (currentTab === 'Completed') {
+    displayTasks = tasks.filter(task => task.isComplete);
+  }
+
+  displayTasks.forEach(task => {
     const taskHTML = `
         <p>${task.task}</p>
         <button class="edit-btn" onclick='editTask(${task.id})'>✏ Edit</button>
@@ -76,7 +79,9 @@ function editTask(id) {
   // task we want to edit
   const taskToEdit = tasks.find(task => task.id === id);
   // pop up with new paragraph
+  const newTask = prompt('Please enter the new task');
   // set task with new paragraph
+  taskToEdit.task = newTask;
   // update UI
   displayTasks(tasks);
 }
@@ -87,5 +92,10 @@ function markComplete(id) {
   // Update Status
   completedTask.isComplete = true;
   // Update UI
+  displayTasks(tasks);
+}
+
+function setTab(tab = 'All') {
+  currentTab = tab;
   displayTasks(tasks);
 }

@@ -20,30 +20,15 @@
         <button type="submit" name="add">Add Task</button>
       </form>
       <div class="button-container">
-        <button type="button" class="filter-btn">All</button>
-        <button type="button" class="filter-btn">Active</button>
-        <button type="button" class="filter-btn">Completed</button>
+        <button type="button" class="filter-btn" onclick="setTab()">All</button>
+        <button type="button" class="filter-btn" onclick="setTab('Active')">
+          Active
+        </button>
+        <button type="button" class="filter-btn" onclick="setTab('Completed')">
+          Completed
+        </button>
       </div>
-      <div class="task-container">
-        <div class="task">
-          <p>Complete HTML and CSS</p>
-          <button class="edit-btn">✏ Edit</button>
-          <button class="complete-btn">✔ Complete</button>
-          <button class="remove-btn">🗑 Delete</button>
-        </div>
-        <div class="task">
-          <p>Study JavaScript</p>
-          <button class="edit-btn">✏ Edit</button>
-          <button class="complete-btn">✔ Complete</button>
-          <button class="remove-btn">🗑 Delete</button>
-        </div>
-        <div class="task completed">
-          <p>Finish reading a book</p>
-          <button class="edit-btn">✏ Edit</button>
-          <button class="complete-btn" disabled>✔ Completed</button>
-          <button class="remove-btn">🗑 Delete</button>
-        </div>
-      </div>
+      <div class="task-container"></div>
     </main>
     <script src="script.js"></script>
   </body>
