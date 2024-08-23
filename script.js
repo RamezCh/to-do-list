@@ -9,53 +9,47 @@ const tasks = [];
 let idCounter = 0;
 let currentTab = 'All';
 // Form event listener
-document
-  .getElementById('task-form')
-  .addEventListener('submit', function (event) {
-    // Prevent refresh
-    event.preventDefault();
-    // Get Form Data
-    const formData = new FormData(event.target);
-    const formObject = Object.fromEntries(formData.entries());
-    // Clear Input
-    document.getElementById('task').value = '';
-    const task = formObject.task;
-    // Confirm task there
-    console.log(task);
-    // Add task
-    const taskObject = { id: idCounter, task, isComplete: false };
-    idCounter++;
-    tasks.push(taskObject);
-    // Confirm tasks
-    console.log(tasks);
-    // Update UI
-    displayTasks(tasks);
-  });
+document.getElementById('task-form').addEventListener('submit', event => {
+  // Prevent refresh
+  event.preventDefault();
+  // Get Form Data
+  const formData = new FormData(event.target);
+  const formObject = Object.fromEntries(formData.entries());
+  // Clear Input
+  document.getElementById('task').value = '';
+  const task = formObject.task;
+  // Add task
+  const taskObject = { id: idCounter, task, isComplete: false };
+  idCounter++;
+  tasks.push(taskObject);
+  // Update UI
+  displayTasks(tasks);
+});
 
 // Functions
 function displayTasks(tasks) {
   // Clear the task container
   taskContainer.innerHTML = '';
   // default 'All'
-  let displayTasks = tasks;
+  let filteredTasks = tasks;
 
   if (currentTab === 'Active') {
-    displayTasks = tasks.filter(task => !task.isComplete);
+    filteredTasks = tasks.filter(task => !task.isComplete);
   }
 
   if (currentTab === 'Completed') {
-    displayTasks = tasks.filter(task => task.isComplete);
+    filteredTasks = tasks.filter(task => task.isComplete);
   }
 
   // Loop through the tasks array and create HTML elements for each task
-  displayTasks.forEach(task => {
+  filteredTasks.forEach(task => {
     const taskHTML = `
   <p>${task.task}</p>
   ${
     task.isComplete
-      ? `<button class="complete-btn" onclick='markNotComplete(${task.id})'>❌ Mark as Incomplete</button>`
+      ? `<button class="complete-btn" onclick='toggleComplete(${task.id})'>❌ Mark as Incomplete</button>`
       : `<button class="edit-btn" onclick='editTask(${task.id})'>✏️ Edit</button>
-         <button class="complete-btn" onclick='markComplete(${task.id})'>✔️ Mark as Complete</button>`
+     <button class="complete-btn" onclick='toggleComplete(${task.id})'>✔️ Mark as Complete</button>`
   }
   <button class="remove-btn" onclick='deleteTask(${task.id})'>🗑️ Delete</button>
 `;
@@ -90,26 +84,21 @@ function editTask(id) {
   const taskToEdit = tasks.find(task => task.id === id);
   // pop up with new paragraph
   const newTask = prompt('Please enter the new task');
+  // Null Check
+  if (newTask === null || newTask.trim() === '') {
+    return;
+  }
   // set task with new paragraph
   taskToEdit.task = newTask;
   // update UI
   displayTasks(tasks);
 }
 
-function markComplete(id) {
+function toggleComplete(id) {
   // Find Task
-  const completedTask = tasks.find(task => task.id === id);
-  // Update Status
-  completedTask.isComplete = true;
-  // Update UI
-  displayTasks(tasks);
-}
-
-function markNotComplete(id) {
-  // Find Task
-  const completedTask = tasks.find(task => task.id === id);
-  // Update Status
-  completedTask.isComplete = false;
+  const task = tasks.find(task => task.id === id);
+  // Reverse isComplete
+  task.isComplete = !task.isComplete;
   // Update UI
   displayTasks(tasks);
 }
