@@ -17,7 +17,7 @@ main {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 650px;
+  max-width: 850px;
   box-sizing: border-box;
 }
 
@@ -122,6 +122,10 @@ form button:hover {
 .task.completed p {
   text-decoration: line-through;
   color: #999;
+}
+
+.task.completed {
+  border-left: 5px solid #d9534f;
 }
 
 .task button {

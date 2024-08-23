@@ -1,13 +1,14 @@
 'use strict';
 
 // Get elements
+
 // ByClassName returns an array
 const taskContainer = document.getElementsByClassName('task-container')[0];
-
+// Initial Values
 const tasks = [];
 let idCounter = 0;
 let currentTab = 'All';
-
+// Form event listener
 document
   .getElementById('task-form')
   .addEventListener('submit', function (event) {
@@ -35,8 +36,9 @@ document
 function displayTasks(tasks) {
   // Clear the task container
   taskContainer.innerHTML = '';
+  // default 'All'
   let displayTasks = tasks;
-  // Loop through the tasks array and create HTML elements for each task
+
   if (currentTab === 'Active') {
     displayTasks = tasks.filter(task => !task.isComplete);
   }
@@ -45,20 +47,28 @@ function displayTasks(tasks) {
     displayTasks = tasks.filter(task => task.isComplete);
   }
 
+  // Loop through the tasks array and create HTML elements for each task
   displayTasks.forEach(task => {
     const taskHTML = `
-        <p>${task.task}</p>
-        <button class="edit-btn" onclick='editTask(${task.id})'>✏ Edit</button>
-        <button class="complete-btn" onclick='markComplete(${task.id})'>✔ Complete</button>
-        <button class="remove-btn" onclick='deleteTask(${task.id})'>🗑 Delete</button>
-      `;
-
+  <p>${task.task}</p>
+  ${
+    task.isComplete
+      ? `<button class="complete-btn" onclick='markNotComplete(${task.id})'>❌ Mark as Incomplete</button>`
+      : `<button class="edit-btn" onclick='editTask(${task.id})'>✏️ Edit</button>
+         <button class="complete-btn" onclick='markComplete(${task.id})'>✔️ Mark as Complete</button>`
+  }
+  <button class="remove-btn" onclick='deleteTask(${task.id})'>🗑️ Delete</button>
+`;
+    // Create new Element
     const taskElement = document.createElement('div');
+    // Add Classes
     taskElement.classList.add('task');
     if (task.isComplete) {
       taskElement.classList.add('completed');
     }
+    // add HTML inside div
     taskElement.innerHTML = taskHTML;
+    // Put it inside taskContainer div
     taskContainer.appendChild(taskElement);
   });
 }
@@ -95,7 +105,26 @@ function markComplete(id) {
   displayTasks(tasks);
 }
 
+function markNotComplete(id) {
+  // Find Task
+  const completedTask = tasks.find(task => task.id === id);
+  // Update Status
+  completedTask.isComplete = false;
+  // Update UI
+  displayTasks(tasks);
+}
+
 function setTab(tab = 'All') {
+  // Set Global variable to tab
   currentTab = tab;
+  // Get all buttons and remove active-tab then if it isn't currentTab
+  document.querySelectorAll('.filter-btn').forEach(button => {
+    if (button.textContent.trim() === currentTab) {
+      button.classList.add('active-tab');
+    } else {
+      button.classList.remove('active-tab');
+    }
+  });
+  // Update UI
   displayTasks(tasks);
 }
