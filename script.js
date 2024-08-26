@@ -1,13 +1,15 @@
 'use strict';
 
 // Get elements
-
-// ByClassName returns an array
 const taskContainer = document.getElementsByClassName('task-container')[0];
 // Initial Values
-const tasks = [];
-let idCounter = 0;
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let idCounter = tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 0;
 let currentTab = 'All';
+
+// Display tasks on initial load
+displayTasks(tasks);
+
 // Form event listener
 document.getElementById('task-form').addEventListener('submit', event => {
   // Prevent refresh
@@ -22,6 +24,8 @@ document.getElementById('task-form').addEventListener('submit', event => {
   const taskObject = { id: idCounter, task, isComplete: false };
   idCounter++;
   tasks.push(taskObject);
+  // Save to localStorage
+  saveTasks();
   // Update UI
   displayTasks(tasks);
 });
@@ -44,15 +48,17 @@ function displayTasks(tasks) {
   // Loop through the tasks array and create HTML elements for each task
   filteredTasks.forEach(task => {
     const taskHTML = `
-  <p>${task.task}</p>
-  ${
-    task.isComplete
-      ? `<button class="complete-btn" onclick='toggleComplete(${task.id})'>❌ Mark as Incomplete</button>`
-      : `<button class="edit-btn" onclick='editTask(${task.id})'>✏️ Edit</button>
-     <button class="complete-btn" onclick='toggleComplete(${task.id})'>✔️ Mark as Complete</button>`
-  }
-  <button class="remove-btn" onclick='deleteTask(${task.id})'>🗑️ Delete</button>
-`;
+      <p>${task.task}</p>
+      ${
+        task.isComplete
+          ? `<button class="complete-btn" onclick='toggleComplete(${task.id})'>❌ Mark as Incomplete</button>`
+          : `<button class="edit-btn" onclick='editTask(${task.id})'>✏️ Edit</button>
+             <button class="complete-btn" onclick='toggleComplete(${task.id})'>✔️ Mark as Complete</button>`
+      }
+      <button class="remove-btn" onclick='deleteTask(${
+        task.id
+      })'>🗑️ Delete</button>
+    `;
     // Create new Element
     const taskElement = document.createElement('div');
     // Add Classes
@@ -74,9 +80,10 @@ function deleteTask(id) {
   const deleteIndex = tasks.indexOf(taskToDelete);
   // remove only one element
   tasks.splice(deleteIndex, 1);
+  // Save to localStorage
+  saveTasks();
   // update UI
   displayTasks(tasks);
-  // We could have used id directly but if we had deleted some tasks id wouldnt match index anymore
 }
 
 function editTask(id) {
@@ -90,6 +97,8 @@ function editTask(id) {
   }
   // set task with new paragraph
   taskToEdit.task = newTask;
+  // Save to localStorage
+  saveTasks();
   // update UI
   displayTasks(tasks);
 }
@@ -99,6 +108,8 @@ function toggleComplete(id) {
   const task = tasks.find(task => task.id === id);
   // Reverse isComplete
   task.isComplete = !task.isComplete;
+  // Save to localStorage
+  saveTasks();
   // Update UI
   displayTasks(tasks);
 }
@@ -116,4 +127,8 @@ function setTab(tab = 'All') {
   });
   // Update UI
   displayTasks(tasks);
+}
+
+function saveTasks() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
 }
