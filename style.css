@@ -95,6 +95,9 @@ form button:hover {
   background-color: #025aa5;
 }
 
+.filter-btn {
+  width: 120px;
+}
 /* Task Container */
 .task-container {
   list-style: none;
@@ -170,11 +173,15 @@ form button:hover {
   }
 
   form button {
+    width: 100%;
+    margin: 0;
     padding: 10px;
     font-size: 14px;
   }
 
   .button-container button {
+    flex-direction: column;
+    width: 100%;
     padding: 10px;
     font-size: 14px;
     margin: 5px 0;
